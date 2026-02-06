@@ -4,6 +4,12 @@ import { fileURLToPath } from "url";
 import helmet from 'helmet';
 import morgan from 'morgan';
 import rateLimit from 'express-rate-limit';
+import cors from "cors";
+const app: express.Application = express();
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocument from '../swagger/swagger.json' with { type: 'json' };
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Local Imports (NOTE: .mts extension is required in ESM)
 import routes from './routes/index.mts';
@@ -12,8 +18,6 @@ import {globalErrorHandler} from './middleware/error.middleware.mts';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-
-const app: express.Application = express();
 // Serve static files from the public folder
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true })); // to parse the incoming requests with URL parameters
@@ -24,6 +28,8 @@ app.use(express.json({ limit: '10kb' })); // To parse the incoming requests with
 // Set security HTTP headers
 // (Protects against XSS, sniffer attacks, etc.)
 app.use(helmet());
+
+app.use(cors())
 
 
 // Development logging

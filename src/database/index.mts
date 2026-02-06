@@ -1,4 +1,4 @@
-import { MongoClient, ServerApiVersion } from 'mongodb';
+import { MongoClient, ServerApiVersion } from "mongodb";
 const uri = process.env.MONGO_URI || "";
 // console.log(uri);
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -7,15 +7,15 @@ const client = new MongoClient(uri, {
     version: ServerApiVersion.v1,
     strict: true,
     deprecationErrors: true,
-  }
+  },
 });
 
 let _db: MongoClient | null = null;
 
-const initDb = async (callback:Function) => {
-    // Check if the db is already initialized
+const initDb = async (callback: Function) => {
+  // Check if the db is already initialized
   if (_db) {
-    console.log('Db is already initialized!');
+    console.log("Db is already initialized!");
     return callback(null, _db);
   }
   // if the db is not initialized, connect to MongoDB
@@ -33,7 +33,7 @@ const initDb = async (callback:Function) => {
 
 const getDb = () => {
   if (!_db) {
-    throw Error('Db not initialized');
+    throw Error("Db not initialized");
   }
   return _db.db(process.env.MONGO_DATABASE);
 };

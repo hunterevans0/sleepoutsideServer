@@ -1,7 +1,5 @@
 import { type Db, MongoClient, ServerApiVersion } from "mongodb";
-import * as argon2 from "argon2";
 import { products } from "./data/products.js";
-import type { User } from "./data/users.ts";
 
 // node --env-file=.env src/database/init-db.ts
 
@@ -90,13 +88,32 @@ const seedProducts = async (db: Db) => {
   try {
     // drop the collection to clear out the old records
     db.dropCollection("products");
-    db.dropCollection("users");
-    db.dropCollection("alerts");
-    console.log("Collection 'products', 'users', and 'alerts' dropped successfully");
+    console.log("Collection 'products' dropped successfully");
 
     // create a new collection
     db.createCollection("products");
     console.log("Collection 'products' created successfully");
+
+    // Drop and add alerts
+    db.dropCollection("alerts");
+    console.log("Collection 'alerts' dropped successfully");
+
+    db.createCollection("alerts");
+    console.log("Collection 'alerts' created successfully");
+
+    // Drop and add users
+    db.dropCollection("users");
+    console.log("Collection 'users' dropped successfully");
+
+    db.createCollection("users");
+    console.log("Collection 'users' created successfully");
+
+    // Drop and add reviews
+    db.dropCollection("reviews");
+    console.log("Collection 'reviews' dropped successfully");
+
+    db.createCollection("reviews");
+    console.log("Collection 'reviews' created successfully");
 
     // create indexes for the users collection
     await db.collection("users").createIndex({ name: 1 });
@@ -107,6 +124,7 @@ const seedProducts = async (db: Db) => {
     await db.collection("products").createIndex({ description: 1 });
     await db.collection("products").createIndex({ category: 1 });
     await db.collection("products").createIndex({ id: 1 });
+
     // insert all products
     const result = await db.collection("products").insertMany(reformattedProducts as any)
 
@@ -118,6 +136,5 @@ const seedProducts = async (db: Db) => {
     console.error((error as Error).message);
   }
 };
-
 
 init();
