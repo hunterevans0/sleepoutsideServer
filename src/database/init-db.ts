@@ -1,4 +1,5 @@
 import { type Db, MongoClient, ServerApiVersion } from "mongodb";
+import * as argon2 from "argon2";
 import { products } from "./data/products.js";
 
 // node --env-file=.env src/database/init-db.ts
@@ -88,7 +89,9 @@ const seedProducts = async (db: Db) => {
   try {
     // drop the collection to clear out the old records
     db.dropCollection("products");
-    console.log("Collection 'products' dropped successfully");
+    db.dropCollection("users");
+    db.dropCollection("alerts");
+    console.log("Collection 'products', 'users', and 'alerts' dropped successfully");
 
     // create a new collection
     db.createCollection("products");
