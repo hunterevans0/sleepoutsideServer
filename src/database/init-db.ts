@@ -1,6 +1,6 @@
 import { type Db, MongoClient, ServerApiVersion } from "mongodb";
-import { products } from "./products.js";
 import * as argon2 from "argon2";
+import { products } from "./data/products.js";
 
 // node --env-file=.env src/database/init-db.ts
 
