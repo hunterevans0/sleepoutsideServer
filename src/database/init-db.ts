@@ -97,6 +97,27 @@ const seedProducts = async (db: Db) => {
     db.createCollection("products");
     console.log("Collection 'products' created successfully");
 
+    // Drop and add alerts
+    db.dropCollection("alerts");
+    console.log("Collection 'alerts' dropped successfully");
+
+    db.createCollection("alerts");
+    console.log("Collection 'alerts' created successfully");
+
+    // Drop and add users
+    db.dropCollection("users");
+    console.log("Collection 'users' dropped successfully");
+
+    db.createCollection("users");
+    console.log("Collection 'users' created successfully");
+
+    // Drop and add reviews
+    db.dropCollection("reviews");
+    console.log("Collection 'reviews' dropped successfully");
+
+    db.createCollection("reviews");
+    console.log("Collection 'reviews' created successfully");
+
     // insert all products
     const result = await db.collection("products").insertMany(reformattedProducts as any)
 
