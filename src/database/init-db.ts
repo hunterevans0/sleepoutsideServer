@@ -1,5 +1,4 @@
 import { type Db, MongoClient, ServerApiVersion } from "mongodb";
-import * as argon2 from "argon2";
 import { products } from "./data/products.js";
 
 // node --env-file=.env src/database/init-db.ts
@@ -89,9 +88,7 @@ const seedProducts = async (db: Db) => {
   try {
     // drop the collection to clear out the old records
     db.dropCollection("products");
-    db.dropCollection("users");
-    db.dropCollection("alerts");
-    console.log("Collection 'products', 'users', and 'alerts' dropped successfully");
+    console.log("Collection 'products' dropped successfully");
 
     // create a new collection
     db.createCollection("products");
@@ -117,6 +114,16 @@ const seedProducts = async (db: Db) => {
 
     db.createCollection("reviews");
     console.log("Collection 'reviews' created successfully");
+
+    // create indexes for the users collection
+    await db.collection("users").createIndex({ name: 1 });
+    await db.collection("users").createIndex({ email: 1 });
+
+    // create indexes for the products collection
+    await db.collection("products").createIndex({ name: 1 });
+    await db.collection("products").createIndex({ description: 1 });
+    await db.collection("products").createIndex({ category: 1 });
+    await db.collection("products").createIndex({ id: 1 });
 
     // insert all products
     const result = await db.collection("products").insertMany(reformattedProducts as any)
