@@ -98,9 +98,15 @@ const seedProducts = async (db: Db) => {
     db.createCollection("products");
     console.log("Collection 'products' created successfully");
 
-    await db.collection<User>("users").createIndex({ name: 1 });
-    await db.collection<User>("users").createIndex({ email: 1 });
-    await db.collection<User>("users").createIndex({ name: 1 });
+    // create indexes for the users collection
+    await db.collection("users").createIndex({ name: 1 });
+    await db.collection("users").createIndex({ email: 1 });
+
+    // create indexes for the products collection
+    await db.collection("products").createIndex({ name: 1 });
+    await db.collection("products").createIndex({ description: 1 });
+    await db.collection("products").createIndex({ category: 1 });
+    await db.collection("products").createIndex({ id: 1 });
     // insert all products
     const result = await db.collection("products").insertMany(reformattedProducts as any)
 
