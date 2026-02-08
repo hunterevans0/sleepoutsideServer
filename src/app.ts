@@ -8,7 +8,10 @@ import cors from "cors";
 const app: express.Application = express();
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from '../swagger/swagger.json' with { type: 'json' };
+import {sanitize} from "./utils.mts";
 
+const cleanQuery = sanitize(req.query);
+const results = await productService.getAllProducts(cleanQuery);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Local Imports (NOTE: .mts extension is required in ESM)

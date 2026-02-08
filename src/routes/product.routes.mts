@@ -1,6 +1,7 @@
 import {Router } from "express";
 import productService from "../services/product.service.mts";
 import EntityNotFoundError from "../errors/EntityNotFoundError.mts";
+import { sanitize } from "../utils.mts";
 const router: Router = Router();
 
 // GET /products/
@@ -13,13 +14,14 @@ router.get("/", async (req, res, next) => {
     // If you check the middleware folder you will see a general error handler that will get called automatically when we throw like this
     return next(new EntityNotFoundError({message : 'Products Not Found',code: 'ERR_NF',
     statusCode : 404}))
-  }
+    
 
   res.status(200).json(products);
 } catch (error) {
   next(error);
 }
 });
+
 
 router.get("/:id", async (req, res, next) => {
   
