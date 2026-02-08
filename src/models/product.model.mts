@@ -1,7 +1,5 @@
 import mongodb from "../database/index.mts";
-import productService from "../services/product.service.mts";
 import type {Product} from "./types.mts";
-import { sanitize } from "../utils.mts";
 
 
 async function getAllProducts(): Promise<Product[] | null> {
@@ -23,8 +21,6 @@ async function getProductsByCategory(category: string): Promise<Product[] | null
 }
 
 async function addProduct(product: Product): Promise<void> {
-    const cleanQuery = sanitize(req.query);
-    const results = await productService.getAllProducts(cleanQuery);
     await mongodb.getDb().collection<Product>("products").insertOne(product);
     console.log(`Product with id ${product.id} added to the database.`);
 }
